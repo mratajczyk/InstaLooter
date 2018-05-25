@@ -14,6 +14,7 @@ import six
 import tenacity
 
 from ._impl import PIL, piexif, json
+from .proxy import get_proxy
 
 
 class InstaDownloader(threading.Thread):
@@ -41,6 +42,7 @@ class InstaDownloader(threading.Thread):
         self.destination = destination
         self.namegen = namegen
         self.session = session or requests.Session()
+        self.session.proxies = get_proxy()
         self.pbar = pbar
 
         self.dump_only = dump_only

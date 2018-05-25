@@ -22,6 +22,7 @@ from requests import Session
 from six.moves.queue import Queue
 from six.moves.http_cookiejar import FileCookieJar, LWPCookieJar
 
+from lib.InstaLooter.instalooter.proxy import get_proxy
 from . import __author__, __name__ as __appname__, __version__
 from ._impl import length_hint, json
 from ._utils import NameGenerator, CachedClassProperty, get_shared_data
@@ -89,6 +90,7 @@ class InstaLooter(object):
 
         """
         session = session or Session()
+        session.proxies = get_proxy()
         # Load cookies
         session.cookies = LWPCookieJar(
             cls._cachefs.getsyspath(cls._COOKIE_FILE))
@@ -263,6 +265,7 @@ class InstaLooter(object):
         self.dump_json = dump_json or dump_only
         self.extended_dump = extended_dump
         self.session = self._init_session(session)
+
         atexit.register(self.session.close)
 
         # Set a fake User-Agent
