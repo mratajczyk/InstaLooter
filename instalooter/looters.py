@@ -274,8 +274,9 @@ class InstaLooter(object):
 
         # Get CSRFToken and RHX
         with self.session.get('https://www.instagram.com/') as res:
-            self.session.headers['X-CSRFToken'] = res.cookies['csrftoken']
-            self.rhx = get_shared_data(res.text)['rhx_gis']
+            shared_data = get_shared_data(str(res.content))
+            self.session.headers['X-CSRFToken'] = shared_data['config']['csrf_token']
+            self.rhx = shared_data['rhx_gis']
 
 
     @abc.abstractmethod
