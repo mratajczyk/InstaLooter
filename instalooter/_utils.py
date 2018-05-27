@@ -91,4 +91,19 @@ class CachedClassProperty(object):
 
 def get_shared_data(html):
     match = re.search(r'window._sharedData = ({[^\n]*});<\/script>', html)
-    return json.loads(match.group(1))
+    return fix_JSON(match.group(1))
+
+
+def fix_JSON(json_message=None):
+    result = None
+    try:
+        result = json.loads(json_message)
+    except Exception as e:
+        # Find the offending character index:
+        idx_to_replace = int(str(e).split(' ')[-1].replace(')', ''))
+        # Remove the offending character:
+        json_message = list(json_message)
+        json_message[idx_to_replace] = ' '
+        new_message = ''.join(json_message)
+        return fix_JSON(json_message=new_message)
+    return result
