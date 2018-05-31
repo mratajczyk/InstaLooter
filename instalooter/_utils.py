@@ -90,6 +90,11 @@ class CachedClassProperty(object):
 
 
 def get_shared_data(html):
+    shared_data = None
     match = re.search(r'window._sharedData = ({[^\n]*});<\/script>', html)
-    return json.loads(match.group(1).replace('\\', ''))
+    try:
+        shared_data = json.loads(match.group(1))
+    except Exception as e:
+        pass
 
+    return shared_data, match
