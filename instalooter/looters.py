@@ -275,8 +275,8 @@ class InstaLooter(object):
         # Get CSRFToken and RHX
         with self.session.get('https://www.instagram.com/') as res:
             shared_data = get_shared_data(str(res.content))
-            self.session.headers['X-CSRFToken'] = shared_data['config']['csrf_token']
-            self.rhx = shared_data['rhx_gis']
+            self.session.headers['X-CSRFToken'] = shared_data[0]['config']['csrf_token']
+            self.rhx = shared_data[0]['rhx_gis']
 
 
     @abc.abstractmethod
@@ -338,7 +338,7 @@ class InstaLooter(object):
         url = "https://www.instagram.com/p/{}/".format(code)
         with self.session.get(url) as res:
             data = get_shared_data(res.text)
-            return data['entry_data']['PostPage'][0]['graphql']['shortcode_media']
+            return data[0]['entry_data']['PostPage'][0]['graphql']['shortcode_media']
 
     def download_pictures(self,
                           destination,       # type: Union[str, fs.base.FS]

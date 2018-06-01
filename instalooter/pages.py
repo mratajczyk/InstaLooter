@@ -155,7 +155,7 @@ class ProfileIterator(PageIterator):
         url = "https://www.instagram.com/{}/".format(username)
         try:
             with session.get(url) as res:
-                return get_shared_data(res.text)
+                return get_shared_data(res.text)[0]
         except (ValueError, AttributeError):
             raise ValueError("account not found: {}".format(username))
 
