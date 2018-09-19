@@ -13,7 +13,7 @@ LOOTER_PROXY_KEY = 'LOOTER_PROXY'
 def get_proxy():
     proxies = {}
     proxy_check = os.getenv(LOOTER_PROXY_KEY)
-    if proxy_check:
+    if len(proxy_check) > 0:
         proxies = {
             'http': proxy_check,
             'https': proxy_check
